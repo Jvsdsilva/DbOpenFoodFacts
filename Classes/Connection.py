@@ -30,8 +30,8 @@ class Connection():
             with connection.cursor() as cursor:
             # Create a new record
                dbquery.Insert_stores(cursor)
-               dbquery.Insert_category(cursor)
-               dbquery.Insert_ingredients(cursor)
+               #dbquery.Insert_category(cursor)
+               #dbquery.Insert_ingredients(cursor)
             # connection is not autocommit by default. So you must commit to save
             # your changes.
             connection.commit()

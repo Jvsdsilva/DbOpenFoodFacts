@@ -1,6 +1,5 @@
 # Constants
 
-
 # Data base settings
 HOST = "localhost"
 USER = "root"

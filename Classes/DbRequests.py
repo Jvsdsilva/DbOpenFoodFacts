@@ -3,8 +3,9 @@ import pyodbc
 import urllib
 import requests
 import json
-from Classes import DbInsert
 from constants import *
+
+
 class DbRequests():
 
 
@@ -16,16 +17,20 @@ class DbRequests():
     def Request_stores(self):
         url_stores = "https://fr.openfoodfacts.org/stores.json"
         json_data = requests.get(url_stores).json()
+
+        #content = json.dumps(json_data, indent = 4, sort_keys=True)
+        #print(content)
         json_stores = json_data['tags']
         stores = {}
-        
+
         for each in json_stores:
             #print("ID: {0} \t NAME: {1}".format(each['id'], each['name']))
             name_store = each['name'] # collect item name
             url_store = each['url'] # collect item url
             stores.update({name_store:url_store}) # Add to dictionary
-        
+        #print(stores)
         return(stores)
+
 
 #--Request api openfoodfacts categories
     def Request_categories(self):    
@@ -67,6 +72,15 @@ class DbRequests():
 
     def Insert_stores(self,cursor):
         data = self.Request_stores()
+        
+        sql = """INSERT INTO openfoodfacts.store (StoreName, Url) VALUES (%(StoreName)s,%(Url)s)""", data
+        
+        try:
+            cursor.executemany(sql)
+        except Exception:
+            print("Error data insert: ")
+
+        return (sql)
 
         #self.Insert_Db(cursor,TSTORE,FIELDS_STORE,data)
 
