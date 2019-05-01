@@ -12,23 +12,29 @@ class DbRequests():
     def __init__(self):
             # Call the parent class constructor
             super().__init__()
+            
 
 #--Request api openfoodfacts stores
     def Request_stores(self):
         url_stores = "https://fr.openfoodfacts.org/stores.json"
         json_data = requests.get(url_stores).json()
+        stores = {}
 
         #content = json.dumps(json_data, indent = 4, sort_keys=True)
         #print(content)
         json_stores = json_data['tags']
-        stores = {}
-
+        
         for each in json_stores:
             #print("ID: {0} \t NAME: {1}".format(each['id'], each['name']))
-            name_store = each['name'] # collect item name
+            name_store = each['name']# collect item name
             url_store = each['url'] # collect item url
-            stores.update({name_store:url_store}) # Add to dictionary
-        #print(stores)
+            stores["StoreName"] = name_store
+            stores["URL"] = url_store
+            #stores.update({"StoreName":name_store, "URL":url_store}) # Add to dictionary
+            #print(name_store)
+            #print(url_store)       
+            print(stores)
+        
         return(stores)
 
 
@@ -76,9 +82,9 @@ class DbRequests():
         sql = """INSERT INTO openfoodfacts.store (StoreName, Url) VALUES (%(StoreName)s,%(Url)s)""", data
         
         try:
-            cursor.executemany(sql)
-        except Exception:
-            print("Error data insert: ")
+            cursor.executemany(sql,data)
+        except Exception as e:
+            print("Error data insert: " + str(e))
 
         return (sql)
 
