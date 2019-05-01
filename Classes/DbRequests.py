@@ -18,25 +18,44 @@ class DbRequests():
     def Request_stores(self):
         url_stores = "https://fr.openfoodfacts.org/stores.json"
         json_data = requests.get(url_stores).json()
-        stores = {}
-
+        store = {}
+        stores = [{"StoreName":"Test","URL":"htttp"}]
+        #print(json_data)
         #content = json.dumps(json_data, indent = 4, sort_keys=True)
         #print(content)
         json_stores = json_data['tags']
-        
+
         for each in json_stores:
             #print("ID: {0} \t NAME: {1}".format(each['id'], each['name']))
             name_store = each['name']# collect item name
             url_store = each['url'] # collect item url
-            stores["StoreName"] = name_store
-            stores["URL"] = url_store
+            #store.update({"StoreName":name_store, "Url":url_store}) # Add to dictionary
+            store["StoreName"] = name_store
+            store["Url"] = url_store
+            #print(store)
+            stores.append(store)
+            
             #stores.update({"StoreName":name_store, "URL":url_store}) # Add to dictionary
             #print(name_store)
-            #print(url_store)       
-            print(stores)
+            #print(url_store)
+        print(stores)
         
         return(stores)
 
+    def Insert_stores(self,cursor):
+        data = self.Request_stores()
+        
+        sql = ("""INSERT INTO openfoodfacts.store (StoreName, Url) VALUES (%(StoreName)s,%(Url)s)""")
+        
+        try:
+            cursor.executemany(sql,data)
+        except Exception as e:
+            print(sql)
+            print("Error data insert: " + str(e))
+
+        return (sql)
+
+        #self.Insert_Db(cursor,TSTORE,FIELDS_STORE,data)
 
 #--Request api openfoodfacts categories
     def Request_categories(self):    
@@ -76,19 +95,6 @@ class DbRequests():
 
         return (sql)
 
-    def Insert_stores(self,cursor):
-        data = self.Request_stores()
-        
-        sql = """INSERT INTO openfoodfacts.store (StoreName, Url) VALUES (%(StoreName)s,%(Url)s)""", data
-        
-        try:
-            cursor.executemany(sql,data)
-        except Exception as e:
-            print("Error data insert: " + str(e))
-
-        return (sql)
-
-        #self.Insert_Db(cursor,TSTORE,FIELDS_STORE,data)
 
 
     def Insert_category(self,cursor):
