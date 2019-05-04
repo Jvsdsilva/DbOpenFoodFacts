@@ -1,4 +1,10 @@
 #Genere Menu
+# Import the necessary packages
+from consolemenu import *
+from consolemenu.items import *
+from Classes import DbRequests
+from constants import *
+from Classes import Connection
 
 class Menu():
 
@@ -22,21 +28,33 @@ class Menu():
 
 
     def genere_menu(self):
-        print("Pur Beurre Bonjour, \n 1. Print Quel aliment souhaitez-vous remplacer ? \n 2. Print Retrouver mes aliments substitués.")
-        choice = input()    
-        
-        if choice == "1":
-            print("Sélectionnez la catégorie,\n 1. Print Categorie1 \n 2. Print Categorie2 \n 3. Print Categorie3 ")
-            choice_category = input()
+        # Create the menu
+        menu = ConsoleMenu(TITLE, SUBTITLE)
 
-            if choice_category == "1":
-                print("categorie1")
-            if choice_category == "2":
-                print("categorie2")
-            if choice_category == "3":
-                print("categorie3")
-        
-        if choice == "2":
-            print("Recherche liste ")
+        # Create some items
 
-            self.set_category(choice_category)
+        # MenuItem is the base class for all items, it doesn't do anything when selected
+        menu_item = MenuItem("Menu Item")
+
+        # A FunctionItem runs a Python function when selected
+        function_item = FunctionItem("Call a Python function", input, ["Enter an input"])
+
+        # A CommandItem runs a console command
+        command_item = CommandItem("Run a console command",  "touch hello.txt")
+
+        # A SelectionMenu constructs a menu from a list of strings
+        selection_menu = SelectionMenu(["Choisir une catégorie", "Retrouver mes aliments substitués"])
+
+        # A SubmenuItem lets you add a menu (the selection_menu above, for example)
+        # as a submenu of another menu
+        submenu_item = SubmenuItem("Quel aliment souhaitez-vous remplacer?", selection_menu, menu)
+
+        # Once we're done creating them, we just add the items to the menu
+        menu.append_item(menu_item)
+        menu.append_item(function_item)
+        menu.append_item(command_item)
+        menu.append_item(submenu_item)
+
+        # Finally, we call show to show the menu and allow the user to interact
+        menu.show()
+
