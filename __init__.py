@@ -5,10 +5,11 @@ from Classes import Menu
 
 # Main program
 def main():
-    #menu = Menu.Menu()
-    #menu.genere_menu()
     con = Connection.Connection()
     con.Open_connection_MySQL()
+    #menu = Menu.Menu()
+    #menu.genere_menu()
+    
     
            
 

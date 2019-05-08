@@ -23,7 +23,7 @@ class Connection():
             print("Error MySQL connection")
 
         self.Cursor_connexion(connection)
-        connection.close()
+        #connection.close()
         
         return connection 
 
@@ -34,27 +34,25 @@ class Connection():
         try:
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 # Create a new record
-                #dbquery.Category_query(cursor)
-                
-                """dbquery.Drop_foodsave(cursor)
-                dbquery.Drop_arrange(cursor)
-                dbquery.Drop_stow(cursor)
-                dbquery.Drop_store(cursor)
-                dbquery.Drop_category(cursor)
-                dbquery.Drop_aliment(cursor)"""
-
-                dbquery.Insert_stores(cursor)
+                """dbquery.Drop_store(cursor)
+                dbquery.Drop_foodsave(cursor)
+                dbquery.Drop_aliment(cursor)
+                dbquery.Drop_category(cursor)"""
+                #dbquery.Insert_category(cursor)
+                #dbquery.Insert_stores(cursor)
                 dbquery.Insert_ingredients(cursor)
-                dbquery.Insert_category(cursor)
-                
-                dbquery.Insert_stow(cursor)
-                dbquery.Insert_arrange(cursor)
                 
                 # connection is not autocommit by default. So you must commit to save
                 # your changes.
                 connection.commit()
+                
+                try:
+                    dbquery.Category_query(cursor)
+                except Exception as e:
+                    print("Error with query: "  + str(e))
         finally:
-            cursor.close()
             connection.close()
+            cursor.close()
+            
         return cursor
 

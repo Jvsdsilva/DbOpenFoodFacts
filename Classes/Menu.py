@@ -28,6 +28,12 @@ class Menu():
 
 
     def genere_menu(self):
+        connexion = Connection.Connection()
+        conexion_bdd = connexion.Open_connection_MySQL()
+        cursor = connexion.Cursor_connexion(conexion_bdd)
+        request = DbRequests.DbRequests()
+        mycategory = request.Category_query(cursor)
+        print(mycategory)
         # Create the menu
         menu = ConsoleMenu(TITLE, SUBTITLE)
 
