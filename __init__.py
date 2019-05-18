@@ -8,7 +8,7 @@ def main():
     con = Connection.Connection()
     con.Open_connection_MySQL()
     #menu = Menu.Menu()
-    #menu.genere_menu()
+    #menu.genere_menu2()
     
     
            

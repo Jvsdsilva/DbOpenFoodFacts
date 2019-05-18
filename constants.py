@@ -12,12 +12,12 @@ TCATEGORY = DB + ".category"
 TFOODSAVE = DB + ".foodsave"
         
 FIELDS_STORE = " (StoreName, Url) "
-FIELDS_ALIMENT = " (IdCategory, IdStore, NameAlim, DescriptionAlim, NutritionGrade) "
+FIELDS_ALIMENT = " (NameAlim, DescriptionAlim, IdCategory, IdStore) "
 FIELDS_CATEGORY = " (NameCategory) "
 FIELDS_FOODSAVE = " (NameFood)"
 
 FIELDS_INSERT_STORE = " %(StoreName)s, %(Url)s "
-FIELDS_INSERT_ALIMENT = "%(IdCategory)s,%(IdStore)s, %(NameAlim)s, %(DescriptionAlim)s, %(NutritionGrade)s"
+FIELDS_INSERT_ALIMENT = " %(NameAlim)s, %(DescriptionAlim)s, %(IdCategory)s,%(IdStore)s"
 FIELDS_INSERT_CATEGORY = " %(NameCategory)s"
 FIELDS_INSERT_FOODSAVE = " %(IdAliment)s, %(NameFood)s"
 
