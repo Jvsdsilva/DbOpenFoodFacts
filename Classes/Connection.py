@@ -4,7 +4,7 @@ import pymysql.cursors
 from consolemenu import *
 from consolemenu.items import *
 from Classes import Menu
-from Classes import DbRequests1
+from Classes import DbRequests2
 from constants import *
 
 class Connection():
@@ -30,7 +30,7 @@ class Connection():
         return connection 
 
     def Cursor_connexion(self,connection):     
-        dbquery = DbRequests1.DbRequests()
+        dbquery = DbRequests2.DbRequests()
         menu = Menu.Menu()
         # Data base insert
         try:
@@ -41,9 +41,11 @@ class Connection():
                 dbquery.Drop_store(cursor)
                 dbquery.Drop_aliment(cursor)
                 dbquery.Drop_category(cursor)"""
+                #dbquery.Request_categories()
                 #dbquery.Insert_category(cursor)
+                dbquery.Request_ingredients(cursor)
                 #dbquery.Insert_stores(cursor)
-                dbquery.Insert_ingredients(cursor)
+                #dbquery.Insert_ingredients(cursor)
                 
                 # connection is not autocommit by default. So you must commit to save
                 # your changes.

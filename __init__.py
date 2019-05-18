@@ -9,9 +9,8 @@ def main():
     con.Open_connection_MySQL()
     #menu = Menu.Menu()
     #menu.genere_menu2()
-    
-    
-           
+    #menu.menu()
+
 
 if __name__ == "__main__":
     main()

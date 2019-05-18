@@ -86,22 +86,57 @@ class Menu():
 
         submenu_item = SubmenuItem("Quel aliment souhaitez-vous remplacer?", selection_menu, menu)
         
-        selection_menu2 = SelectionMenu([list_category],None)
+        selection_menu2 = SelectionMenu(list_aliments)
         #selection = SelectionMenu.get_selection(list_category)
         submenu_item2 = SubmenuItem("Choisir une catégorie", selection_menu2, menu)
+        submenu_item4 = SubmenuItem("Choisir un aliment", selection_menu2, menu)
+        """choice_category = input(submenu_item2)
 
-        selection_menu4 = SelectionMenu([list_aliments],None)
-        submenu_item2 = SubmenuItem("Choisir une catégorie", selection_menu4, menu)
+        if choice_category == "1":
+            print("alim1")
+        if choice_category == "2":
+            print("alim2")
+        if choice_category == "3":
+            print("alim3")"""
         
         selection_menu3 = SelectionMenu([list_category])
         submenu_item3 = SubmenuItem("Retrouver mes aliments substitués", selection_menu3, menu)
         
         
         # Once we're done creating them, we just add the items to the menu
-        menu.append_item(menu_item)
+        #menu.append_item(menu_item)
         menu.append_item(function_item)
         #menu.append_item(selection)
         menu.append_item(submenu_item)
         menu.append_item(submenu_item3)
         # Finally, we call show to show the menu and allow the user to interact
         menu.show()
+
+    def menu(self):
+        
+        print("Pur Beurre Bonjour")
+
+        print("1 Quel aliment souhaitez-vous remplacer?")
+        print("2 Retrouver mes aliments substitués")
+        print("3 Exit")
+        print("4 Exit")
+        
+        choice = input()    
+        
+        if choice == "1":
+            list_category = ["category1", "category2", "category3"]
+            print("Sélectionnez la catégorie, \n ")
+            print(list_category)
+            choice_category = input()
+
+            if choice_category == "1":
+                print("categorie1")
+            if choice_category == "2":
+                print("categorie2")
+            if choice_category == "3":
+                print("categorie3")
+        
+        if choice == "2":
+            print("Recherche liste ")
+
+        
