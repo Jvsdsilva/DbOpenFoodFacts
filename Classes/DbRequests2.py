@@ -69,7 +69,7 @@ class DbRequests():
 
         except Exception:
             print("Error with query: " + tablename + query)
-        print(myresult)
+        #print(myresult)
         return(myresult)
 
 #--Request api openfoodfacts ingredients
@@ -87,15 +87,30 @@ class DbRequests():
         
         for each in json_data['products']:
             ingredient = {}
-            Name_category = each['categories']
+            Name_category = each['categories'].split()
             Name_Store = each['stores']
             name_ingredients = each['product_name'] # collect item name
             description_ingred = each['ingredients_text_debug']
             #nutrition_grade = each['nutrition_grade_fr'] # collect item 
-            IdNameCategory = self.Get_id_table(cursor, ID_CATEGORY, "NameCategory", TCATEGORY)
-            print(IdNameCategory)
-
-            """if IdNameCategory["NameCategory"] in Name_category:
-                print(IdNameCategory[1])"""
+            ingredient["NameCategory"] = Name_category # Add to dictionary
+            ingredient["NameAlim"] = name_ingredients # Add to dictionary
+            ingredient["NameStore"] = Name_Store # Add to dictionary
+            ingredient["DescriptionAlim"] = description_ingred # Add to dictionary
+		    #ingredient["NutritionGrade"] = nutrition_grade
+        
+        ingredients.append(ingredient) # Add items dictionary to list
+        print(ingredients)
 
         return(ingredients)
+
+     # Insert into table category
+    def Insert_ingredients(self,cursor):
+        data = self.Request_ingredients(cursor)
+        #print(data)
+        IdNameCategory = self.Get_id_table(cursor, ID_CATEGORY, "NameCategory", TCATEGORY)
+        #print(IdNameCategory[0]["NameCategory"])
+
+        """if IdNameCategory[0]["NameCategory"] in data[0]["NameCategory"]:
+            print(IdNameCategory[0]["IdCategory"])"""
+
+        #self.Insert_Db(cursor,TCATEGORY,FIELDS_CATEGORY,FIELDS_INSERT_CATEGORY, data)

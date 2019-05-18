@@ -2,7 +2,7 @@
 # Import the necessary packages
 from consolemenu import *
 from consolemenu.items import *
-from Classes import DbRequests
+#from Classes import DbRequests
 from constants import *
 from Classes import Connection
 
