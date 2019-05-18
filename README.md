@@ -13,7 +13,7 @@ You will also be able to save your search in a database that you can consult at 
 All code is commented.
 
 ```
-To download the library [Open food facts](https://github.com/openfoodfacts/openfoodfacts-python)
+To download the package [Open food facts](https://github.com/openfoodfacts/openfoodfacts-python)
 ```
 
 You also need to have a MySQL database connection. You can download it from [MySQL](https://www.mysql.com/)
