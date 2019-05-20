@@ -7,6 +7,7 @@ from Classes import Menu
 def main():
     con = Connection.Connection()
     con.Open_connection_MySQL()
+    #con.connexion_sqlite()
     #menu = Menu.Menu()
     #menu.genere_menu2()
     #menu.menu()

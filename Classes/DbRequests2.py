@@ -58,7 +58,6 @@ class DbRequests():
 
     # Get methode to get id from tables
     def Get_id_table(self, cursor, id, name, tablename):
-        table_result = {}
         query = "SELECT " + id.strip() + ", " + name.strip()+" FROM " + tablename
         
         try:
@@ -77,40 +76,62 @@ class DbRequests():
         url_ingredients = "https://fr.openfoodfacts.org/cgi/search.pl?search_terms=products&search_simple=1&action=process&json=1"
         json_data = requests.get(url_ingredients).json()
         ingredients = []
-        
-        #parcourir la data
-        # a chaque tour de boucle sauvegarder la categorie
-        # utiliser le nom de la categorie pour verifier si elle existe dans la table categorie
-        # si elle est presente sauvegarder le id categorie
-        # faire la même chose pour le store
-        # inserer la ligne dans la table aliment
-        
+
         for each in json_data['products']:
             ingredient = {}
-            Name_category = each['categories'].split()
+            Name_category = each['categories'].split(",")
             Name_Store = each['stores']
             name_ingredients = each['product_name'] # collect item name
             description_ingred = each['ingredients_text_debug']
-            #nutrition_grade = each['nutrition_grade_fr'] # collect item 
-            ingredient["NameCategory"] = Name_category # Add to dictionary
+
+            first_category = Name_category[0]
+            ingredient["NameCategory"] = first_category # Add to dictionary
             ingredient["NameAlim"] = name_ingredients # Add to dictionary
             ingredient["NameStore"] = Name_Store # Add to dictionary
             ingredient["DescriptionAlim"] = description_ingred # Add to dictionary
 		    #ingredient["NutritionGrade"] = nutrition_grade
-        
-        ingredients.append(ingredient) # Add items dictionary to list
+            IdNameCategory = self.Get_id_table(cursor, ID_CATEGORY, "NameCategory", TCATEGORY)
+            
+            for each in IdNameCategory:
+                if each["NameCategory"] in ingredient["NameCategory"]:
+                    idcategory = each["IdCategory"]
+                    ingredient["IdCategory"] = idcategory
+                    #print(idcategory)
+
+            ingredients.append(ingredient) # Add items dictionary to list
         print(ingredients)
 
         return(ingredients)
 
-     # Insert into table category
+    def One_category(self,cursor):
+        url_ingredients = "https://fr.openfoodfacts.org/cgi/search.pl?search_terms=products&search_simple=1&action=process&json=1"
+        json_data = requests.get(url_ingredients).json()
+        name = []
+        
+        for each in json_data['products']['categories']:
+            names = {}
+            Name_category = each['categories'].split()
+            names["NameCategory"] = Name_category # Add to dictionary
+            category1 = Name_category[0]
+            category2 = category1.replace(","," ")
+        #print(names["NameCategory"])
+        #print(category2)
+        name.append(names) # Add items dictionary to list
+        #print(name[0])
+
+        return(category2)
+
+    # Insert into table category
     def Insert_ingredients(self,cursor):
         data = self.Request_ingredients(cursor)
-        #print(data)
-        IdNameCategory = self.Get_id_table(cursor, ID_CATEGORY, "NameCategory", TCATEGORY)
+        print(data)
+        """IdNameCategory = self.Get_id_table(cursor, ID_CATEGORY, "NameCategory", TCATEGORY)
         #print(IdNameCategory[0]["NameCategory"])
+        #print(data[0]["NameCategory"])
+        for each in IdNameCategory:
+            #print(each["NameCategory"])
+            if each["NameCategory"] in data[0]["NameCategory"]:
+                idcategory = each["IdCategory"]
+                #print(idcategory)"""
 
-        """if IdNameCategory[0]["NameCategory"] in data[0]["NameCategory"]:
-            print(IdNameCategory[0]["IdCategory"])"""
-
-        #self.Insert_Db(cursor,TCATEGORY,FIELDS_CATEGORY,FIELDS_INSERT_CATEGORY, data)
+        self.Insert_Db(cursor,TALIMENT,FIELDS_ALIMENT,FIELDS_INSERT_ALIMENT, data)
