@@ -83,7 +83,8 @@ class DbRequests():
             Name_Store = each['stores']
             name_ingredients = each['product_name'] # collect item name
             description_ingred = each['ingredients_text_debug']
-
+            nutrition_grades = each['nutrition_grade_fr']
+            print(nutrition_grades)
             first_category = Name_category[0]
             ingredient["NameCategory"] = first_category # Add to dictionary
             ingredient["NameAlim"] = name_ingredients # Add to dictionary
@@ -99,7 +100,7 @@ class DbRequests():
                     #print(idcategory)
 
             ingredients.append(ingredient) # Add items dictionary to list
-        print(ingredients)
+        #print(ingredients)
 
         return(ingredients)
 
@@ -135,3 +136,25 @@ class DbRequests():
                 #print(idcategory)"""
 
         self.Insert_Db(cursor,TALIMENT,FIELDS_ALIMENT,FIELDS_INSERT_ALIMENT, data)
+
+    def Nutrition_Grade(self):
+        url_ingredients = "https://fr.openfoodfacts.org/cgi/search.pl?search_terms=products&search_simple=1&action=process&json=1"
+        json_data = requests.get(url_ingredients).json()
+        name = []
+        #print(json_data['products'])
+        for each in json_data['products']:
+            names = {}
+            NutritionGrade = each['nutrition_grade_fr']
+            #print(each['nutrition_grade_fr'])
+            NutritionGrade = ",".join(NutritionGrade)
+            #print(NutritionGrade)
+            if NutritionGrade == " " or NutritionGrade == "null":
+                NutritionGrade = " "
+            
+                #print(NutritionGrade)
+            names["NutritionGrade"] = NutritionGrade # Add to dictionary
+        
+            name.append(names) # Add items dictionary to list
+        #print(name)
+
+        return(name)

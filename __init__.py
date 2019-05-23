@@ -5,12 +5,12 @@ from Classes import Menu
 
 # Main program
 def main():
-    con = Connection.Connection()
-    con.Open_connection_MySQL()
+    #con = Connection.Connection()
+    #con.Open_connection_MySQL()
     #con.connexion_sqlite()
-    #menu = Menu.Menu()
+    menu = Menu.Menu()
     #menu.genere_menu2()
-    #menu.menu()
+    menu.menu()
 
 
 if __name__ == "__main__":

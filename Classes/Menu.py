@@ -5,6 +5,7 @@ from consolemenu.items import *
 #from Classes import DbRequests
 from constants import *
 from Classes import Connection
+import sys, os
 
 class Menu():
 
@@ -88,7 +89,7 @@ class Menu():
         
         selection_menu2 = SelectionMenu(list_aliments)
         #selection = SelectionMenu.get_selection(list_category)
-        submenu_item2 = SubmenuItem("Choisir une catégorie", selection_menu2, menu)
+        submenu_item2 = SubmenuItem("Choisir une catégorie", selection_menu, menu)
         submenu_item4 = SubmenuItem("Choisir un aliment", selection_menu2, menu)
         """choice_category = input(submenu_item2)
 
@@ -101,7 +102,6 @@ class Menu():
         
         selection_menu3 = SelectionMenu([list_category])
         submenu_item3 = SubmenuItem("Retrouver mes aliments substitués", selection_menu3, menu)
-        
         
         # Once we're done creating them, we just add the items to the menu
         #menu.append_item(menu_item)
@@ -124,19 +124,62 @@ class Menu():
         choice = input()    
         
         if choice == "1":
-            list_category = ["category1", "category2", "category3"]
-            print("Sélectionnez la catégorie, \n ")
-            print(list_category)
+            #list_category = ["category1", "category2", "category3"]
+            list_alim1 = ["alimcat1", "alimcat1", "alimcat1"]
+            list_alim2 = ["alimcat2", "alimcat2", "alimcat2"]
+            list_alim3 = ["alimcat3", "alimcat3", "alimcat3"]
+            print("Sélectionnez la catégorie \n ")
+            print("1 category1")
+            print("2 category2")
+            print("3 category3")
+            print("4 category4")
+            #print(list_category)
             choice_category = input()
-
-            if choice_category == "1":
-                print("categorie1")
+            
+            if choice_category == "1":          
+                print("Selectionnez l'aliment \n ")
+                print("1 alimcat1")
+                print("2 alimcat1")
+                print("3 alimcat1")
+                print("4 alimcat1")
+                choice_alim1 = input()
+                if choice_alim1 == "1":
+                    Id_categorie = "1"
+                    NomAlim = "alim1"
+                    print(NomAlim)
+                if choice_alim1 == "2":
+                    Id_categorie = "1"
+                    NomAlim = "alim1"
+                    print(NomAlim)
+                if choice_alim1 == "3":
+                    Id_categorie = "1"
+                    NomAlim = "alim1"
+                    print(NomAlim)
+                if choice_alim1 == "4":
+                    Id_categorie = "1"
+                    NomAlim = "alim1"
+                    print(NomAlim)
             if choice_category == "2":
-                print("categorie2")
+                print("Selectionnez l'aliment \n ")
+                print("1 alimcat1")
+                print("2 alimcat1")
+                print("3 alimcat1")
+                print("4 alimcat1")
+                choice_alim2 = input()
+                if choice_alim2 == "2":
+                    Id_categorie = "2"
+                    NomAlim = "alim2"
+                    print(NomAlim)
             if choice_category == "3":
-                print("categorie3")
-        
+                print("Selectionnez l'aliment \n ")
+                print("1 alimcat1")
+                print("2 alimcat1")
+                print("3 alimcat1")
+                print("4 alimcat1")
+                choice_alim3 = input()
+                if choice_alim3 == "3":
+                    Id_categorie = "3"
+                    NomAlim = "alim3"
+                    print(NomAlim)
         if choice == "2":
             print("Recherche liste ")
-
-        

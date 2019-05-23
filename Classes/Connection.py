@@ -56,10 +56,11 @@ class Connection():
                 dbquery.Drop_category(cursor)"""
                 #dbquery.Request_categories()
                 #dbquery.Insert_category(cursor)
-                #dbquery.Request_ingredients(cursor)
+                #dbquery.Nutrition_Grade()
+                dbquery.Request_ingredients(cursor)
                 #dbquery.Insert_stores(cursor)
                 #dbquery.One_category(cursor)
-                dbquery.Insert_ingredients(cursor)
+                #dbquery.Insert_ingredients(cursor)
                 
                 # connection is not autocommit by default. So you must commit to save
                 # your changes.
@@ -96,12 +97,13 @@ class Connection():
             dbquery.Drop_store(cursor)
             dbquery.Drop_aliment(cursor)
             dbquery.Drop_category(cursor)"""
+            dbquery.Nutrition_Grade()
             #dbquery.Request_categories()
-            #dbquery.Insert_category(cursor)
-            dbquery.Request_ingredients(cursor)
+            dbquery.Insert_category(cursor)
+            #dbquery.Request_ingredients(cursor)
             #dbquery.Insert_stores(cursor)
-            dbquery.One_category(cursor)
-            #dbquery.Insert_ingredients(cursor)
+            #dbquery.One_category(cursor)
+            dbquery.Insert_ingredients(cursor)
             
             # connection is not autocommit by default. So you must commit to save
             # your changes.
