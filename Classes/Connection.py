@@ -35,7 +35,7 @@ class Connection():
                 # Create a new record
                 #dbquery.Insert_category(cursor)
                 #dbquery.Insert_ingredients(cursor)
-                
+                #dbquery.Request_ingredients(cursor)
                 # connection is not autocommit by default. So you must commit to save
                 # your changes.
                 connection.commit()
