@@ -1,6 +1,4 @@
 #import MySQLdb
-#import pyodbc
-import urllib
 import requests
 import json
 from constants import *
@@ -52,7 +50,7 @@ class DbRequests():
         data = self.Request_categories()
         self.Insert_Db(cursor,TCATEGORY,FIELDS_CATEGORY,FIELDS_INSERT_CATEGORY, data)
 
-    # -------------------------------- #
+# -------------------------------- #
 #              QUERYS              #
 # -------------------------------- #
 
@@ -71,7 +69,7 @@ class DbRequests():
         #print(myresult)
         return(myresult)
 
-#--Request api openfoodfacts ingredients
+    #--Request api openfoodfacts ingredients
     def Request_ingredients(self,cursor):  
         url_ingredients = "https://fr.openfoodfacts.org/cgi/search.pl?search_terms=products&search_simple=1&action=process&json=1"
         json_data = requests.get(url_ingredients).json()
@@ -80,16 +78,24 @@ class DbRequests():
         for each in json_data['products']:
             ingredient = {}
             Name_category = each['categories'].split(",")
-            Name_Store = each['stores']
-            name_ingredients = each['product_name'] # collect item name
+            Name_Store = each['stores'].split(",")
+            Name_ingredients = each['product_name'] # collect item name
+            Url = each['url'] # collect item name
             description_ingred = each['ingredients_text_debug']
-
+            if "nutrition_grade_fr" in each:
+                nutrition_grades = each['nutrition_grade_fr']
+            else:
+                nutrition_grades = " " 
+            
             first_category = Name_category[0]
+            first_store = Name_Store[0]
             ingredient["NameCategory"] = first_category # Add to dictionary
-            ingredient["NameAlim"] = name_ingredients # Add to dictionary
-            ingredient["NameStore"] = Name_Store # Add to dictionary
+            ingredient["NameAlim"] = Name_ingredients # Add to dictionary
+            ingredient["NameStore"] = first_store # Add to dictionary
             ingredient["DescriptionAlim"] = description_ingred # Add to dictionary
-		    #ingredient["NutritionGrade"] = nutrition_grade
+            ingredient["NutritionGrade"] = nutrition_grades
+            ingredient["Url"] = Url
+            
             IdNameCategory = self.Get_id_table(cursor, ID_CATEGORY, "NameCategory", TCATEGORY)
             
             for each in IdNameCategory:
@@ -99,39 +105,50 @@ class DbRequests():
                     #print(idcategory)
 
             ingredients.append(ingredient) # Add items dictionary to list
-        print(ingredients)
+        #print(ingredients)
 
         return(ingredients)
 
-    def One_category(self,cursor):
-        url_ingredients = "https://fr.openfoodfacts.org/cgi/search.pl?search_terms=products&search_simple=1&action=process&json=1"
-        json_data = requests.get(url_ingredients).json()
-        name = []
-        
-        for each in json_data['products']['categories']:
-            names = {}
-            Name_category = each['categories'].split()
-            names["NameCategory"] = Name_category # Add to dictionary
-            category1 = Name_category[0]
-            category2 = category1.replace(","," ")
-        #print(names["NameCategory"])
-        #print(category2)
-        name.append(names) # Add items dictionary to list
-        #print(name[0])
-
-        return(category2)
-
-    # Insert into table category
+    # Insert into table aliment
     def Insert_ingredients(self,cursor):
         data = self.Request_ingredients(cursor)
-        print(data)
-        """IdNameCategory = self.Get_id_table(cursor, ID_CATEGORY, "NameCategory", TCATEGORY)
-        #print(IdNameCategory[0]["NameCategory"])
-        #print(data[0]["NameCategory"])
-        for each in IdNameCategory:
-            #print(each["NameCategory"])
-            if each["NameCategory"] in data[0]["NameCategory"]:
-                idcategory = each["IdCategory"]
-                #print(idcategory)"""
 
         self.Insert_Db(cursor,TALIMENT,FIELDS_ALIMENT,FIELDS_INSERT_ALIMENT, data)
+
+    def Aliment_query(self, cursor, NameAlim, IdCategory):
+        myaliment = []
+        query = "SELECT NameAlim, DescriptionAlim, NameStore, Url FROM " + TALIMENT + " WHERE IdCategory = '" + IdCategory + "' and NutritionGrade = 'a' "
+
+        try:
+            cursor.execute(query)
+
+            myresult = cursor.fetchone()  # fetch the first row only
+            
+
+            for each in myresult:
+                myaliment.append(each)
+            
+
+        except Exception:
+            print("Error with query: " + query)
+
+        #print(myresult)
+        return myresult
+
+    def Foodsave_query(self, cursor, NameFood):
+        
+        IdAliment = self.Get_id_table(cursor, ID_ALIMENT, "IdAliment", TFOODSAVE)
+        print(IdAliment)
+        #?????????????#
+        query = " SELECT f. " + NameFood + ", a.NameAlim, a.DescriptionAlim, a.NameStore, a.Url FROM " + TFOODSAVE + " INNER JOIN " + TALIMENT + " a on f.IdAliment = a.IdAliment WHERE a.IdAliment = '" + IdAliment + "'"
+
+        try:
+            cursor.execute(query)
+
+            myfoodsave = cursor.fetchone()  # fetch the first row only
+
+        except Exception:
+            print("Error with query: " + query)
+
+        #print(myfoodsave)
+        return myfoodsave

@@ -6,24 +6,20 @@ USER = "root"
 PASSWD = "1234"
 DB = "openfoodfacts"
 
-TSTORE = DB + ".store"
 TALIMENT = DB + ".aliment"
 TCATEGORY = DB + ".category"
 TFOODSAVE = DB + ".foodsave"
         
-FIELDS_STORE = " (StoreName, Url) "
-FIELDS_ALIMENT = " (NameAlim, NameStore, DescriptionAlim, IdCategory) "
+FIELDS_ALIMENT = " (NameAlim, NameStore, Url, DescriptionAlim, NutritionGrade, IdCategory) "
 FIELDS_CATEGORY = " (NameCategory) "
-FIELDS_FOODSAVE = " (NameFood)"
+FIELDS_FOODSAVE = " (NameFood, IdAliment) "
 
-FIELDS_INSERT_STORE = " %(StoreName)s, %(Url)s "
-FIELDS_INSERT_ALIMENT = " %(NameAlim)s, %(NameStore)s, %(DescriptionAlim)s, %(IdCategory)s"
+FIELDS_INSERT_ALIMENT = " %(NameAlim)s, %(NameStore)s, %(Url)s, %(DescriptionAlim)s, %(NutritionGrade)s, %(IdCategory)s"
 FIELDS_INSERT_CATEGORY = " %(NameCategory)s"
-FIELDS_INSERT_FOODSAVE = " %(IdAliment)s, %(NameFood)s"
+FIELDS_INSERT_FOODSAVE = " %(NameFood)s, %(IdAliment)s "
 
-ID_ALIMENT = " IdAliment "
-ID_STORE = " IdStore "
 ID_CATEGORY = " IdCategory "
+ID_ALIMENT = " IdAliment "
 
 #Menu
 TITLE = "Pur Beurre"
