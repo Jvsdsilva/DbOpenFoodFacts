@@ -12,6 +12,7 @@ class Menu():
 
     def menu(self,cursor,connection):
         request = DbRequests.DbRequests()
+
         print(TITLE)
         print(SUBTITLE)
         print("1 Quel aliment souhaitez-vous remplacer?")
@@ -21,6 +22,7 @@ class Menu():
         choice = input()    
         
         if choice == "1":
+
             print("Sélectionnez la catégorie \n ")
             print("1 category1")
             print("2 category2")
@@ -31,6 +33,7 @@ class Menu():
             
             if choice_category == "1":          
                 print("Selectionnez l'aliment \n ")
+
                 print("1 Corn Flakes")
                 print("2 Muesli Bio Jordans")
                 print("3 mails rouge")
@@ -74,3 +77,4 @@ class Menu():
             NameFood = input()
             Foodsave = request.Foodsave_query(cursor, NameFood)
             print("Recherche liste ")
+

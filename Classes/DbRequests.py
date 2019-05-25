@@ -113,6 +113,7 @@ class DbRequests():
     def Insert_ingredients(self,cursor):
         data = self.Request_ingredients(cursor)
 
+
         self.Insert_Db(cursor,TALIMENT,FIELDS_ALIMENT,FIELDS_INSERT_ALIMENT, data)
 
     def Aliment_query(self, cursor, NameAlim, IdCategory):
@@ -152,3 +153,4 @@ class DbRequests():
 
         #print(myfoodsave)
         return myfoodsave
+

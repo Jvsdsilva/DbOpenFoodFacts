@@ -34,7 +34,6 @@ class Connection():
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 # Create a new record
                 #dbquery.Insert_category(cursor)
-                
                 #dbquery.Insert_ingredients(cursor)
                 
                 # connection is not autocommit by default. So you must commit to save
@@ -52,4 +51,3 @@ class Connection():
             cursor.close()
 
         return cursor
-
