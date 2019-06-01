@@ -1,4 +1,4 @@
-# Query the Open Food Facts database
+# Query the Open Food Facts database by console
 
 This program allows you to query the Open Food Facts database to retrieve food, compare it and offer the user a healthier substitute.
 You may choose between two questions, you’ll type the number that suits you.
@@ -12,11 +12,14 @@ You will also be able to save your search in a database that you can consult at 
 
 All code is commented.
 
-```
-To download the library [Open food facts](https://github.com/openfoodfacts/openfoodfacts-python)
+First lunch the data base script "Script_OpenFoodFacts_DB.sql"
 ```
 
 You also need to have a MySQL database connection. You can download it from [MySQL](https://www.mysql.com/)
+
+You can change MySQL settings (host, user, passwd, db) in "constants.py"
+```
+To open the programme type in console : python __init__.py (windows)
 ```
 
 

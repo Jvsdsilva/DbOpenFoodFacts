@@ -21,7 +21,8 @@ class DbRequests():
 
         for each in json_data['tags']:
             category = {} 
-            category_name = each['name']# collect item name               
+            category_name = each['name']# collect item name
+            print(each['name'])              
             category["NameCategory"] = category_name # Add to dictionary
             categories.append(category) # Add items dictionary to list
 
@@ -29,7 +30,8 @@ class DbRequests():
 
 #--Request api openfoodfacts ingredients
     def Request_ingredients(self,cursor):
-        url_ingredients = "https://fr.openfoodfacts.org/cgi/search.pl?search_terms=products&search_simple=1&action=process&page_size=60&json=1"
+        url_ingredients = ("https://fr.openfoodfacts.org/cgi/search.pl?search_terms" +
+        "=products&search_simple=1&action=process&page_size=60&json=1")
         json_data = requests.get(url_ingredients).json()
         ingredients = []
         
@@ -159,3 +161,17 @@ class DbRequests():
             print("Error with query: " + query)
 
         return myfoodsave
+    
+    # Search results in a table
+    def Presence_query(self, cursor, NameTable):
+
+        query = ("SELECT * FROM " + NameTable)
+        
+        try:
+            cursor.execute(query)
+            myresult = cursor.fetchone()  # fetch the first row only
+
+        except Exception:
+            print("Error with query: " + query)
+
+        return myresult

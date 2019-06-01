@@ -33,8 +33,13 @@ class Connection():
         try:
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 # Data base insert
-                """dbquery.Insert_category(cursor)
-                dbquery.Insert_ingredients(cursor)"""
+                Result_category = dbquery.Presence_query(cursor, TCATEGORY)
+                Result_aliment = dbquery.Presence_query(cursor, TALIMENT)
+                
+                if Result_category == "0" and Result_aliment == "0" :
+                    dbquery.Insert_category(cursor)
+                    dbquery.Insert_ingredients(cursor)
+                    connection.commit()
                 
                 try:
                     # console menu
