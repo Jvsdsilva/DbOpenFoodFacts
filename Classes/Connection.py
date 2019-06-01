@@ -1,5 +1,4 @@
 import pymysql.cursors
-#from Classes import DbRequests
 from Classes import Menu
 from Classes import DbRequests
 from constants import *
@@ -10,6 +9,7 @@ class Connection():
             # Call the parent class constructor
             super().__init__()
 
+    #Connection to mysql database
     def Open_connection_MySQL(self):
 
         try:
@@ -20,32 +20,32 @@ class Connection():
 
         except Exception:         
             print("Error MySQL connection")
-
-        self.Cursor_connexion(connection)
+        # cursor connection
+        self.Cursor_connection(connection)
         
         return connection 
 
-
-    def Cursor_connexion(self,connection):     
+    # Cursor connection 
+    def Cursor_connection(self,connection):     
         dbquery = DbRequests.DbRequests()
         menu = Menu.Menu()
-        # Data base insert
+        
         try:
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-                # Create a new record
-                #dbquery.Insert_category(cursor)
-                #dbquery.Insert_ingredients(cursor)
-                #dbquery.Request_ingredients(cursor)
-                # connection is not autocommit by default. So you must commit to save
-                # your changes.
-                connection.commit()
+                # Data base insert
+                """dbquery.Insert_category(cursor)
+                dbquery.Insert_ingredients(cursor)"""
                 
                 try:
+                    # console menu
                     menu.menu(cursor, connection)
-                    
+
                 except Exception as e:
                     print("Error with menu: "  + str(e))
                 
+                # connection is not autocommit by default. So you must commit to save
+                # your changes.
+                connection.commit()
         finally:
             connection.close()
             cursor.close()

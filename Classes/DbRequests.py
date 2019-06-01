@@ -1,4 +1,3 @@
-#import MySQLdb
 import requests
 import json
 from constants import *
@@ -24,80 +23,12 @@ class DbRequests():
             category = {} 
             category_name = each['name']# collect item name               
             category["NameCategory"] = category_name # Add to dictionary
-
             categories.append(category) # Add items dictionary to list
-            
-        #print (categories)
+
         return(categories)
 
-# -------------------------------- #
-#              INSERTS             #
-# -------------------------------- #
-    # Insert methode for data insert 
-    def Insert_Db(self,cursor,tablename,fields,fiels_insert, list):
-        sql = "INSERT INTO " + tablename + fields +  "VALUES ("+ fiels_insert+");"
-
-        try:
-            cursor.executemany(sql, list)
-            print("Insert successful "+ tablename+ "!!")
-        except Exception as e:
-            print(sql)
-            print("Error data insert: " + str(e))
-
-        return (sql)
-    
-    # Insert into table category
-    def Insert_category(self,cursor):
-        data = self.Request_categories()
-        self.Insert_Db(cursor,TCATEGORY,FIELDS_CATEGORY,FIELDS_INSERT_CATEGORY, data)
-
-    # Insert into table aliment
-    def Insert_ingredients(self,cursor):
-        data = self.Request_ingredients(cursor)
-        self.Insert_Db(cursor,TALIMENT,FIELDS_ALIMENT,FIELDS_INSERT_ALIMENT, data)
-
-    # Insert into table foodsave
-    def Foodsave(self,cursor,data_foodsave):
-        self.Insert_Db(cursor,TFOODSAVE,FIELDS_FOODSAVE,FIELDS_INSERT_FOODSAVE, data_foodsave)
-
-# -------------------------------- #
-#              QUERYS              #
-# -------------------------------- #
-
-    # Get methode to get id from tables
-    def Get_id_table(self, cursor, id, name, tablename):
-        query = "SELECT " + id.strip() + ", " + name.strip()+" FROM " + tablename
-        
-        try:
-            cursor.execute(query)
-            myresult = cursor.fetchall()
-            #myresult = cursor.fetchmany(20)
-            #print(myresult)     
-
-        except Exception:
-            print("Error with query: " + tablename + query)
-        #print(myresult)
-        return(myresult)
-
-    # Get methode to get id from tables
-    def Get_id_by_name(self, cursor, id, nameAlim, tablename, Name):
-        query = ("SELECT " + id.strip() + ", " + nameAlim.strip() +" FROM " + tablename +
-                 "WHERE NameAlim = "+ Name )
-        
-        try:
-            cursor.execute(query)
-            myresult = cursor.fetchone()
-            #myresult = cursor.fetchmany(20)
-            print(myresult)     
-
-        except Exception:
-            print("Error with query: " + tablename + query)
-        #print(myresult)
-        return(myresult)
-
-    #--Request api openfoodfacts ingredients
-    def Request_ingredients(self,cursor):  
-        #url_ingredients = "https://fr.openfoodfacts.org/cgi/search.pl?search_terms=products&search_simple=1&action=process&json=1"
+#--Request api openfoodfacts ingredients
+    def Request_ingredients(self,cursor):
         url_ingredients = "https://fr.openfoodfacts.org/cgi/search.pl?search_terms=products&search_simple=1&action=process&page_size=60&json=1"
         json_data = requests.get(url_ingredients).json()
         ingredients = []
@@ -134,16 +65,77 @@ class DbRequests():
                     break
                 
             ingredients.append(ingredient) # Add dictionary's items to list
-        #print(ingredients)
-            #exit()
+
         return(ingredients)
 
+# -------------------------------- #
+#              INSERTS             #
+# -------------------------------- #
+    # Insert methode for data insert 
+    def Insert_Db(self,cursor,tablename,fields,fiels_insert, list):
+        sql = "INSERT INTO " + tablename + fields +  "VALUES ("+ fiels_insert+");"
+
+        try:
+            cursor.executemany(sql, list)
+            print("Insert successful "+ tablename+ "!!")
+        except Exception as e:
+            print(sql)
+            print("Error data insert: " + str(e))
+
+        return (sql)
+    
+    # Insert into table category
+    def Insert_category(self,cursor):
+        data = self.Request_categories()
+        self.Insert_Db(cursor,TCATEGORY,FIELDS_CATEGORY,FIELDS_INSERT_CATEGORY, data)
+
+    # Insert into table aliment
+    def Insert_ingredients(self,cursor):
+        data = self.Request_ingredients(cursor)
+        self.Insert_Db(cursor,TALIMENT,FIELDS_ALIMENT,FIELDS_INSERT_ALIMENT, data)
+
+    # Insert into table foodsave
+    def Foodsave(self,cursor,data_foodsave):
+        print(data_foodsave)
+        self.Insert_Db(cursor,TFOODSAVE,FIELDS_FOODSAVE,FIELDS_INSERT_FOODSAVE, data_foodsave)
+
+# -------------------------------- #
+#              QUERYS              #
+# -------------------------------- #
+
+    # Get methode to get id from tables
+    def Get_id_table(self, cursor, id, name, tablename):
+        query = "SELECT " + id.strip() + ", " + name.strip()+" FROM " + tablename
+        
+        try:
+            cursor.execute(query)
+            myresult = cursor.fetchall()    
+
+        except Exception:
+            print("Error with query: " + tablename + query)
+        
+        return(myresult)
+
+    # Get methode to get id from tables
+    def Get_id_by_name(self, cursor, id, nameAlim, tablename, Name):
+        query = ("SELECT " + id.strip() + ", " + nameAlim.strip() +" FROM " + tablename +
+                 "WHERE NameAlim = "+ Name )
+        
+        try:
+            cursor.execute(query)
+            myresult = cursor.fetchone() # fetch the first row only   
+
+        except Exception:
+            print("Error with query: " + tablename + query)
+        
+        return(myresult)
+
     # Search of aliments by IdCategory in table Aliment
-    def Aliment_query(self, cursor, NameAlim, IdCategory):
+    def Aliment_query(self, cursor, NameAlim, IdCategory,NutritionGrade):
 
         query = ("SELECT IdAliment, NameAlim, DescriptionAlim, NameStore, Url FROM " 
-        + TALIMENT  + " WHERE IdCategory = '" + IdCategory + "' and NutritionGrade = 'a'")
-        # 
+        + TALIMENT  + " WHERE IdCategory = " + IdCategory + " and NutritionGrade = '" + NutritionGrade + "'")
+        
         try:
             cursor.execute(query)
             myresult = cursor.fetchone()  # fetch the first row only
@@ -151,27 +143,19 @@ class DbRequests():
         except Exception:
             print("Error with query: " + query)
 
-        #print(myresult)
         return myresult
 
     # Search Aliment in table Foodsave
     def Foodsave_query(self, cursor):
-        
-        IdAliment = self.Get_id_table(cursor, ID_ALIMENT, "IdAliment", TFOODSAVE)
 
-        query = (" SELECT f.NameFood, a.NameAlim, a.DescriptionAlim, a.NameStore, a.Url FROM " 
-        + TFOODSAVE + " INNER JOIN " + TALIMENT + " a on f.IdAliment = a.IdAliment ")
+        query = ("SELECT a.NameAlim, a.DescriptionAlim, a.NameStore, a.Url FROM " 
+        + TFOODSAVE + " f INNER JOIN " + TALIMENT + " a on f.IdAliment = a.IdAliment")
 
         try:
             cursor.execute(query)
-            myfoodsave = cursor.fetchall()  # fetch the first row only
-            #print(myfoodsave)
+            myfoodsave = cursor.fetchall()  # fetch all rows
+
         except Exception:
             print("Error with query: " + query)
 
-        #print(myfoodsave)
         return myfoodsave
-
-    
-        
-        
