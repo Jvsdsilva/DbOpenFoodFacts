@@ -1,7 +1,8 @@
-#Genere Menu
+# Genere Menu
 # Import the necessary packages
 from Classes import DbRequests
 from constants import *
+
 
 class Menu():
 
@@ -9,52 +10,57 @@ class Menu():
         # Call the parent class constructor
         super().__init__()
 
-    def menu(self,cursor,connection):
+    def menu(self, cursor, connection):
         request = DbRequests.DbRequests()
         self.menu_base()
         choice = input()
         if choice == "1" or choice == "2" or choice == "3":
-            #Selection menu choice
+            # Selection menu choice
             if choice == "1":
                 self.menu_category()
                 self.choice_1(request, cursor, connection)
-                
+
             if choice == "2":
                 self.choice_2(request, cursor)
         else:
-            self.menu(cursor,connection)
+            self.menu(cursor, connection)
 
-#-------------------------------------------------------------------#
+# ------------------------------------------------------------------- #
     # Menu choice one
     def choice_1(self, request, cursor, connection):
         # Select category
-        choice_category = input()           
+        choice_category = input()
         self.choice_category(choice_category, request, cursor, connection)
-        if choice_category == "1" or choice_category == "2" or choice_category == "3":
-            #select Aliment
-            choice_aliment = input()  
+        if choice_category == "1" or choice_category == "2" \
+           or choice_category == "3":
+            # Select Aliment
+            choice_aliment = input()
             if choice_aliment == "1" or choice_aliment == "2" \
-            or choice_aliment == "3" or choice_aliment == "4":     
-                self.choice_aliment(choice_category, choice_aliment, request, cursor, connection)
+               or choice_aliment == "3" or choice_aliment == "4":
+                self.choice_aliment(choice_category, choice_aliment, request,
+                                    cursor, connection)
             else:
-                self.choice_category(choice_category, request, cursor, connection)
+                self.choice_category(choice_category, request, cursor,
+                                     connection)
                 choice_aliment = input()
-                self.choice_aliment(choice_category, choice_aliment, request, cursor, connection)
+                self.choice_aliment(choice_category, choice_aliment, request,
+                                    cursor, connection)
         else:
             self.menu_category()
-            choice_category = input()           
+            choice_category = input()
             self.choice_category(choice_category, request, cursor, connection)
-    
+
     # Menu choice two
     def choice_2(self, request, cursor):
-        #Save search
+        # Save search
         Foodsave = request.Foodsave_query(cursor)
         for food in Foodsave:
             print(("Vous recherches \n\n Aliment :{p[NameAlim]} \n" +
-                "Description :{p[DescriptionAlim]} \n Store: {p[NameStore]}  \n"
-                 + "Url: {p[Url]} \n").format(p=food))
-    
-    # Show menu 
+                   "Description :{p[DescriptionAlim]} \n " +
+                   "Store: {p[NameStore]} \n" +
+                   "Url: {p[Url]} \n").format(p=food))
+
+    # Show menu
     def menu_base(self):
         print(TITLE)
         print(SUBTITLE)
@@ -71,28 +77,30 @@ class Menu():
 
     # Show category choice
     def choice_category(self, choice_category, request, cursor, connection):
-        if choice_category == "1":          
+        if choice_category == "1":
             self.list_category1()
-        if choice_category == "2":          
+        if choice_category == "2":
             self.list_category2()
-        if choice_category == "3":          
+        if choice_category == "3":
             self.list_category3()
-    
+
     # Show aliment choice
-    def choice_aliment(self, choice_category, choice_aliment, request, cursor, connection):
-        if choice_aliment == "1":          
+    def choice_aliment(self, choice_category, choice_aliment, request, cursor,
+                       connection):
+        if choice_aliment == "1":
             self.subs_Alim1(choice_category, request, cursor)
 
-        elif choice_aliment == "2":          
+        elif choice_aliment == "2":
             self.subs_Alim2(choice_category, request, cursor)
 
-        elif  choice_aliment == "3":          
+        elif choice_aliment == "3":
             self.subs_Alim3(choice_category, request, cursor)
 
-        elif  choice_aliment == "4":        
+        elif choice_aliment == "4":
             self.subs_Alim4(choice_category, request, cursor)
         else:
-            self.choice_aliment(choice_category, choice_aliment, request, cursor, connection)
+            self.choice_aliment(choice_category, choice_aliment, request,
+                                cursor, connection)
         # return Id Aliment
         if choice_category == "1":
             IdAliment = 32
@@ -149,7 +157,7 @@ class Menu():
     def subs_Alim4(self, choice_category, request, cursor):
         self.choice_categ1_alim4(choice_category, request, cursor)
         self.choice_categ2_alim4(choice_category, request, cursor)
-        self.choice_categ3_alim4(choice_category, request, cursor) 
+        self.choice_categ3_alim4(choice_category, request, cursor)
 
     # Save search
     def save_search(self, idaliment, request, cursor, connection):
@@ -159,127 +167,145 @@ class Menu():
         save = input()
         # choice
         if save == "1":
-            data_foodsave =[]
+            data_foodsave = []
             Foodsave = {}
             Foodsave["IdAliment"] = idaliment
-           
-            #insertion in foodsave table
-            data_foodsave.append(Foodsave)
-            request.Foodsave(cursor,data_foodsave)
-            print("Recherche bien enregistrée!! \n ")
-            self.menu(cursor,connection)
-            
-        if save == "2":
-            self.menu(cursor,connection)
 
-    def request_aliment(self, request, cursor, NameAlim, IdCategorie, NutritionGrade):
-        Aliment = request.Aliment_query(cursor, NameAlim, IdCategorie, NutritionGrade)
+            # insertion in foodsave table
+            data_foodsave.append(Foodsave)
+            request.Foodsave(cursor, data_foodsave)
+            print("Recherche bien enregistrée!! \n ")
+            self.menu(cursor, connection)
+
+        if save == "2":
+            self.menu(cursor, connection)
+
+    def request_aliment(self, request, cursor, NameAlim, IdCategorie,
+                        NutritionGrade):
+        Aliment = request.Aliment_query(cursor, NameAlim, IdCategorie,
+                                        NutritionGrade)
         # If not nutrition grade A we continue to search
         if Aliment == "0":
             NutritionGrade = "b"
-            Aliment = request.Aliment_query(cursor, NameAlim, IdCategorie, NutritionGrade)
+            Aliment = request.Aliment_query(cursor, NameAlim, IdCategorie,
+                                            NutritionGrade)
         elif Aliment == "0":
             NutritionGrade = "c"
-            Aliment = request.Aliment_query(cursor, NameAlim, IdCategorie, NutritionGrade)
+            Aliment = request.Aliment_query(cursor, NameAlim, IdCategorie,
+                                            NutritionGrade)
         else:
             NutritionGrade = "d"
-            Aliment = request.Aliment_query(cursor, NameAlim, IdCategorie, NutritionGrade)
-        
-        print(("Nous vous proposons \n\n Name: {p[NameAlim]} \n Description :{p[DescriptionAlim]} \n" +
-                "Store: {p[NameStore]}  \n Url: {p[Url]} \n").format(p=Aliment))
+            Aliment = request.Aliment_query(cursor, NameAlim, IdCategorie,
+                                            NutritionGrade)
+
+        print(("Nous vous proposons \n\n Name: {p[NameAlim]} \n " +
+               "Description :{p[DescriptionAlim]} \n" +
+               "Store: {p[NameStore]}  \n Url: {p[Url]} \n").format(p=Aliment))
 
     # Choice aliment1 in category 1
-    def choice_categ1_alim1(self,choice_category,request,cursor):
-        if choice_category == "1":          
+    def choice_categ1_alim1(self, choice_category, request, cursor):
+        if choice_category == "1":
             NameAlim = "Corn Flakes"
             IdCategorie = "1"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
 
     # Choice aliment1 in category 2
-    def choice_categ2_alim1(self,choice_category,request,cursor):
+    def choice_categ2_alim1(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Escalope Cordon Bleu"
             IdCategorie = "74"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
-  
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
+
     # Choice aliment1 in category 3
-    def choice_categ3_alim1(self,choice_category,request,cursor):
+    def choice_categ3_alim1(self, choice_category, request, cursor):
         if choice_category == "3":
             NameAlim = "Parmigiano Reggiano râpé frais"
             IdCategorie = "6"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
 
     # Choice aliment2 in category 1
-    def choice_categ1_alim2(self,choice_category,request,cursor):
+    def choice_categ1_alim2(self, choice_category, request, cursor):
         if choice_category == "1":
             NameAlim = "Muesli Bio Jordans"
             IdCategorie = "1"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
-    
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
+
     # Choice aliment2 in category 2
-    def choice_categ2_alim2(self,choice_category,request,cursor):
+    def choice_categ2_alim2(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Miel de fleurs liquide"
             IdCategorie = "74"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
-    
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
+
     # Choice aliment2 in category 3
-    def choice_categ3_alim2(self,choice_category,request,cursor):
+    def choice_categ3_alim2(self, choice_category, request, cursor):
         if choice_category == "3":
             NameAlim = "Chaussée aux Moines"
             IdCategorie = "6"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
 
     # Choice aliment3 in category 1
-    def choice_categ1_alim3(self,choice_category,request,cursor):
+    def choice_categ1_alim3(self, choice_category, request, cursor):
         if choice_category == "1":
             NameAlim = "Lentilles vertes Bio"
             IdCategorie = "1"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
-    
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
+
     # Choice aliment3 in category 2
-    def choice_categ2_alim3(self,choice_category,request,cursor):
+    def choice_categ2_alim3(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Nesquik"
             IdCategorie = "74"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
-    
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
+
     # Choice aliment3 in category 3
-    def choice_categ3_alim3(self,choice_category,request,cursor):
+    def choice_categ3_alim3(self, choice_category, request, cursor):
         if choice_category == "3":
             NameAlim = "Camembert"
             IdCategorie = "6"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
-            
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
+
     # Choice aliment4 in category 1
-    def choice_categ1_alim4(self,choice_category,request,cursor):
+    def choice_categ1_alim4(self, choice_category, request, cursor):
         if choice_category == "1":
             NameAlim = "Kellog's All-Bran"
             IdCategorie = "1"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
-    
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
+
     # Choice aliment4 in category 2
-    def choice_categ2_alim4(self,choice_category,request,cursor):
-         if choice_category == "2":
+    def choice_categ2_alim4(self, choice_category, request, cursor):
+        if choice_category == "2":
             NameAlim = "Pâte brisée Tarte en Or"
             IdCategorie = "74"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
-    
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)
+
     # Choice aliment4 in category 3
-    def choice_categ3_alim4(self,choice_category,request,cursor):
+    def choice_categ3_alim4(self, choice_category, request, cursor):
         if choice_category == "3":
             NameAlim = "Mozzarella (18 % MG)"
             IdCategorie = "6"
             NutritionGrade = "a"
-            self.request_aliment(request, cursor, NameAlim, IdCategorie, NutritionGrade)
+            self.request_aliment(request, cursor, NameAlim, IdCategorie,
+                                 NutritionGrade)

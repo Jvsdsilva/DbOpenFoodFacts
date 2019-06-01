@@ -2,6 +2,7 @@
 # -*- coding: Utf-8 -*
 from Classes import Connection
 
+
 # Main program
 def main():
     con = Connection.Connection()

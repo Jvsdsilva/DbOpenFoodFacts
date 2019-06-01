@@ -3,53 +3,54 @@ from Classes import Menu
 from Classes import DbRequests
 from constants import *
 
+
 class Connection():
 
     def __init__(self):
             # Call the parent class constructor
             super().__init__()
 
-    #Connection to mysql database
+    # Connection to mysql database
     def Open_connection_MySQL(self):
 
         try:
-            connection = pymysql.connect (host = HOST,
-                                          user = USER,
-                                          passwd = PASSWD,
-                                          db = DB)
+            connection = pymysql.connect(host=HOST,
+                                         user=USER,
+                                         passwd=PASSWD,
+                                         db=DB)
 
-        except Exception:         
+        except Exception:
             print("Error MySQL connection")
         # cursor connection
         self.Cursor_connection(connection)
-        
-        return connection 
 
-    # Cursor connection 
-    def Cursor_connection(self,connection):     
+        return connection
+
+    # Cursor connection
+    def Cursor_connection(self, connection):
         dbquery = DbRequests.DbRequests()
         menu = Menu.Menu()
-        
+
         try:
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 # Data base insert
                 Result_category = dbquery.Presence_query(cursor, TCATEGORY)
                 Result_aliment = dbquery.Presence_query(cursor, TALIMENT)
-                
-                if Result_category == "0" and Result_aliment == "0" :
+
+                if Result_category == "0" and Result_aliment == "0":
                     dbquery.Insert_category(cursor)
                     dbquery.Insert_ingredients(cursor)
                     connection.commit()
-                
+
                 try:
                     # console menu
                     menu.menu(cursor, connection)
 
                 except Exception as e:
-                    print("Error with menu: "  + str(e))
-                
-                # connection is not autocommit by default. So you must commit to save
-                # your changes.
+                    print("Error with menu: " + str(e))
+
+                # connection is not autocommit by default.
+                # So you must commit to save your changes.
                 connection.commit()
         finally:
             connection.close()
