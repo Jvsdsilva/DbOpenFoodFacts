@@ -13,14 +13,14 @@ You will also be able to save your search in a database that you can consult at 
 All code is commented.
 
 First lunch the data base script "Script_OpenFoodFacts_DB.sql"
-```
 
-You also need to have a MySQL database connection. You can download it from [MySQL](https://www.mysql.com/)
+You also need to have a MySQL database connection. You can download it from 
+[MySQL](https://www.mysql.com/)
 
 You can change MySQL settings (host, user, passwd, db) in "constants.py"
-```
+
 To open the programme type in console : python __init__.py (windows)
-```
+
 
 
 
