@@ -215,7 +215,7 @@ class Menu():
     def choice_categ2_alim1(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Escalope Cordon Bleu"
-            IdCategorie = "74"
+            IdCategorie = "4816"
             NutritionGrade = "a"
             self.request_aliment(request, cursor, NameAlim, IdCategorie,
                                  NutritionGrade)
@@ -242,7 +242,7 @@ class Menu():
     def choice_categ2_alim2(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Miel de fleurs liquide"
-            IdCategorie = "74"
+            IdCategorie = "4816"
             NutritionGrade = "a"
             self.request_aliment(request, cursor, NameAlim, IdCategorie,
                                  NutritionGrade)
@@ -269,7 +269,7 @@ class Menu():
     def choice_categ2_alim3(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Nesquik"
-            IdCategorie = "74"
+            IdCategorie = "4816"
             NutritionGrade = "a"
             self.request_aliment(request, cursor, NameAlim, IdCategorie,
                                  NutritionGrade)
@@ -296,7 +296,7 @@ class Menu():
     def choice_categ2_alim4(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Pâte brisée Tarte en Or"
-            IdCategorie = "74"
+            IdCategorie = "4816"
             NutritionGrade = "a"
             self.request_aliment(request, cursor, NameAlim, IdCategorie,
                                  NutritionGrade)

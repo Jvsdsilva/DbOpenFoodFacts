@@ -22,9 +22,10 @@ class DbRequests():
         for each in json_data['tags']:
             category = {}
             category_name = each['name']  # collect item name
-            print(each['name'])
-            category["NameCategory"] = category_name  # Add to dictionary
-            categories.append(category)  # Add items dictionary to list
+
+            if category_name > " ":
+                category["NameCategory"] = category_name  # Add to dictionary
+                categories.append(category)  # Add items dictionary to list
 
         return(categories)
 

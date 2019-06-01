@@ -37,10 +37,13 @@ class Connection():
                 Result_category = dbquery.Presence_query(cursor, TCATEGORY)
                 Result_aliment = dbquery.Presence_query(cursor, TALIMENT)
 
-                if Result_category == "0" and Result_aliment == "0":
+                # Results presence of categories and aliments
+                # in database tables
+                if Result_category == 0 or Result_category is None:
                     dbquery.Insert_category(cursor)
+                if Result_aliment == 0 or Result_aliment is None:
                     dbquery.Insert_ingredients(cursor)
-                    connection.commit()
+                connection.commit()
 
                 try:
                     # console menu
