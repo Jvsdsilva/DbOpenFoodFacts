@@ -103,11 +103,19 @@ class Menu():
                                 cursor, connection)
         # return Id Aliment
         if choice_category == "1":
-            IdAliment = 32
+            NameAlim = "Ravioles du Dauphiné"
+            idalim = request.Get_id_alim(cursor, NameAlim, TALIMENT)
+            IdAliment = idalim["IdAliment"]
+
         if choice_category == "2":
-            IdAliment = 1
+            NameAlim = "Kiri à la crème de lait (8 Portions)"
+            idalim = request.Get_id_alim(cursor, NameAlim, TALIMENT)
+            IdAliment = idalim["IdAliment"]
+
         if choice_category == "3":
-            IdAliment = 8
+            NameAlim = "Parmigiano Reggiano râpé frais"
+            idalim = request.Get_id_alim(cursor, NameAlim, TALIMENT)
+            IdAliment = idalim["IdAliment"]
         # Save search
         self.save_search(IdAliment, request, cursor, connection)
 
@@ -130,7 +138,7 @@ class Menu():
     # Category list 3
     def list_category3(self):
         print("Selectionnez l'aliment \n ")
-        print("1 Parmigiano Reggiano râpé frais")
+        print("1 Cancoillotte fabriquée en Franche-Comté")
         print("2 Chaussée aux Moines")
         print("3 Camembert")
         print("4 Mozzarella (18 % MG)")
@@ -184,6 +192,7 @@ class Menu():
                         NutritionGrade):
         Aliment = request.Aliment_query(cursor, NameAlim, IdCategorie,
                                         NutritionGrade)
+
         # If not nutrition grade A we continue to search
         if Aliment == "0":
             NutritionGrade = "b"
@@ -197,10 +206,11 @@ class Menu():
             NutritionGrade = "d"
             Aliment = request.Aliment_query(cursor, NameAlim, IdCategorie,
                                             NutritionGrade)
-
+        
         print(("Nous vous proposons \n\n Name: {p[NameAlim]} \n " +
                "Description :{p[DescriptionAlim]} \n" +
-               "Store: {p[NameStore]}  \n Url: {p[Url]} \n").format(p=Aliment))
+               "Store: {p[NameStore]}  \n " +
+               "Url: {p[Url]} \n").format(p=Aliment))
 
     # Choice aliment1 in category 1
     def choice_categ1_alim1(self, choice_category, request, cursor):
@@ -215,7 +225,7 @@ class Menu():
     def choice_categ2_alim1(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Escalope Cordon Bleu"
-            IdCategorie = "4816"
+            IdCategorie = "4203"
             NutritionGrade = "a"
             self.request_aliment(request, cursor, NameAlim, IdCategorie,
                                  NutritionGrade)
@@ -242,7 +252,7 @@ class Menu():
     def choice_categ2_alim2(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Miel de fleurs liquide"
-            IdCategorie = "4816"
+            IdCategorie = "4203"
             NutritionGrade = "a"
             self.request_aliment(request, cursor, NameAlim, IdCategorie,
                                  NutritionGrade)
@@ -269,7 +279,7 @@ class Menu():
     def choice_categ2_alim3(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Nesquik"
-            IdCategorie = "4816"
+            IdCategorie = "4203"
             NutritionGrade = "a"
             self.request_aliment(request, cursor, NameAlim, IdCategorie,
                                  NutritionGrade)
@@ -296,7 +306,7 @@ class Menu():
     def choice_categ2_alim4(self, choice_category, request, cursor):
         if choice_category == "2":
             NameAlim = "Pâte brisée Tarte en Or"
-            IdCategorie = "4816"
+            IdCategorie = "4203"
             NutritionGrade = "a"
             self.request_aliment(request, cursor, NameAlim, IdCategorie,
                                  NutritionGrade)

@@ -104,7 +104,6 @@ class DbRequests():
 
     # Insert into table foodsave
     def Foodsave(self, cursor, data_foodsave):
-        print(data_foodsave)
         self.Insert_Db(cursor, TFOODSAVE, FIELDS_FOODSAVE,
                        FIELDS_INSERT_FOODSAVE, data_foodsave)
 
@@ -131,6 +130,20 @@ class DbRequests():
         query = ("SELECT " + id.strip() + ", " + nameAlim.strip() +
                  " FROM " + tablename +
                  "WHERE NameAlim = " + Name)
+
+        try:
+            cursor.execute(query)
+            myresult = cursor.fetchone()  # fetch the first row only
+
+        except Exception:
+            print("Error with query: " + tablename + query)
+
+        return(myresult)
+
+    # Get methode to get id from tables
+    def Get_id_alim(self, cursor, nameAlim, tablename):
+        query = (" SELECT IdAliment FROM " + tablename +
+                 " WHERE NameAlim = '" + nameAlim + "'")
 
         try:
             cursor.execute(query)
